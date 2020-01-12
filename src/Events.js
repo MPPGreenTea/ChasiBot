@@ -10,7 +10,7 @@
  * access this class and register events and emit events.
  */
 
-(function (exports) {
+(function () {
 
   function Events(Chasi) {
     this.chasi = Chasi;
@@ -18,6 +18,7 @@
   }
 
   Events.prototype.callEvent = function (event) {
+    event.name = event.name.toLowerCase;
     if (!Array.isArray(this.events[event.name])) returnl
 
     for (var i = 0; i < this.events[event.name].length; i++)
@@ -33,12 +34,12 @@
 
   Events.prototype.create_event = function (name, data) {
     return {
-      name: name,
+      name: name.toLowerCase(),
       data: data,
       timestamp: Date.now()
     };
   };
 
-  module.eports = Events;
+  module.exports = Events;
 
-})(module.exports);
+})();

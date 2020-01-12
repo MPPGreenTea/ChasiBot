@@ -11,7 +11,7 @@
  * helps the bot be able to perform tasks.
  */
 
-(function (exports, Filesystem, Permissions, CommandManager, SpamDetector, ChatIO, Events) {
+(function (Filesystem, Permissions, CommandManager, SpamDetector, ChatIO, Events) {
 
   function Chasi() {
     this.command_manager = null;
@@ -38,8 +38,8 @@
   };
 
   Chasi.prototype.init = function (settings) {
-    if (typeof this.client != "undefined" || typeof this.logger != "function")
-      throw new Error("Client has not been set");
+    if (typeof this.client == "undefined" || typeof this.logger != "function")
+      throw new Error("Client or logger has not been set");
 
     const self = this;
     this.logger("Initializing Chasi Bot...");
@@ -113,6 +113,6 @@
   };
 
 
-  exports = Chasi;
+  module.exports = Chasi;
 
-})(module.exports, require("fs"), require(__dirname + "/Permissions.js"), require(__dirname + "/CommandManager.js"), null, require(__dirname + "/Chat.js"), require(__dirname + "/Events.js"));
+})(require("fs"), require(__dirname + "/Permissions.js"), require(__dirname + "/CommandManager.js"), null, require(__dirname + "/Chat.js"), require(__dirname + "/Events.js"));

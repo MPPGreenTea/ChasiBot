@@ -12,11 +12,11 @@
  * without permission.
  */
 
-(function (exports) {
+(function () {
 
   function Permissions(Chasi) {
     this.chasi = Chasi;
-    
+
     this.data = {};
     this.data.owners = [];
     this.data.moderators = [];
@@ -79,6 +79,6 @@
     this.chasi.settings.permission_owners = this.data.owners;
   };
 
-  exports = Permissions;
+  module.exports = Permissions;
 
-})(module.exports);
+})();

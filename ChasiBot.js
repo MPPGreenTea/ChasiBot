@@ -11,7 +11,7 @@
  * modules the bot requires are also loaded here.
  */
 
-(function (Chasi, Client, Filesystem, Readline) {
+(function (Test, Chasi, Client, Filesystem, Readline) {
 
   var chat_log = "";
   var settings, chasi;
@@ -26,7 +26,33 @@
   if (!Filesystem.existsSync(__dirname + "/settings.txt")) {
     log("INFO", "Settings file will be created");
 
-    Filesystem.writeFileSync(__dirname + "/settings.txt", JSON.stringify({
+    if (!Test) {
+      Filesystem.writeFileSync(__dirname + "/settings.txt", JSON.stringify({
+        terminal_save_logs: false,
+        terminal_commands: true,
+        terminal_time: true,
+
+        mute_strikes: 3,
+        mute_duration: 3E5,
+        mute_threshold: 1E3,
+
+        permissions_bans: [],
+        permissions_owners: [],
+        permissions_moderators: [],
+
+        initalization_channel: "lobby",
+
+        command_prefix: "#",
+
+        buffer_interval: 1500,
+        buffer_max_messages: 7
+      }), "utf8");
+    }
+  }
+
+  if (!Test) settings = JSON.parse(Filesystem.readFileSync(__dirname + "/settings.txt", "utf8"));
+  else {
+    settings = {
       terminal_save_logs: false,
       terminal_commands: true,
       terminal_time: true,
@@ -45,16 +71,17 @@
 
       buffer_interval: 1500,
       buffer_max_messages: 7
-    }), "utf8");
+    };
   }
 
-  settings = JSON.parse(Filesystem.readFileSync(__dirname + "/settings.txt", "utf8"));
   log("INFO", "Settings have been loaded");
+
+  console.log(require(__dirname + "/src/Chasi.js"));
 
   chasi = new Chasi();
   chasi.set_logger(log);
-  chasi.set_client(new Client);
+  chasi.set_client(new Client("ws://www.multiplayerpiano.com:8080"));
 
   chasi.init();
 
-})(require(__dirname + "/src/Chasi.js"), require(__dirname + "/src/Client.js"), require("fs"), require("readline"));
+})(true, require(__dirname + "/src/Chasi.js"), require(__dirname + "/src/Client.js"), require("fs"), require("readline"));

@@ -10,7 +10,7 @@
  * chat messages received from the server and outputs messages to the bot.
  */
 
-(function (exports) {
+(function () {
 
   function CommandManager(Chasi) {
     this.commands = {};
@@ -65,4 +65,4 @@
 
   module.exports = CommandManager;
 
-})(module.exports);
+})();

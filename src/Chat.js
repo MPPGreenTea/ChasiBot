@@ -10,11 +10,16 @@
  * houses the chat buffer that sends chat messages to the client.
  */
 
-(function (exports) {
+(function () {
 
   function ChatIO(Chasi) {
     this.chasi = Chasi;
     this.buffer = [];
+
+    const self = this;
+    this.chasi.client.on("a", function (message) {
+      self.input(message.a, message.p);
+    });
 
     this.initialize_buffer();
   }
@@ -24,7 +29,11 @@
   };
 
   ChatIO.prototype.input = function (message, user) {
-    
+    this.chasi.logger("CHAT", user.name + " #" + user._id + ": " + message);
+    this.chasi.events.callEvent(this.chasi.events.create_event("chat", {
+      message: message,
+      user: user
+    }));
   };
 
   ChatIO.prototype.initialize_buffer = function () {
@@ -50,4 +59,6 @@
     }, parseInt(this.chasi.settings.get_setting("buffer_interval"), 10));
   };
 
-})(module.exports);
+  module.exports = ChatIO;
+
+})();

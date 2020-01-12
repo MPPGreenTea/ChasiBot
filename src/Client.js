@@ -11,7 +11,7 @@
  * client to perform tasks.
  */
 
-(function (exports, WebSocket, EventEmitter) {
+(function (WebSocket, EventEmitter) {
 
 	function extend(a, b) {
 		for (var i in b) {
@@ -181,6 +181,6 @@
 		}
 	};
 
-	exports = Client;
+	module.exports = Client;
 
-})(module.exports, require("ws"), require("events").EventEmitter);
+})(require("ws"), require("events").EventEmitter);

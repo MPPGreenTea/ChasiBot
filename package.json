@@ -1,0 +1,20 @@
+{
+  "name": "ChasiBot",
+  "version": "1.0.0",
+  "description": "Multiplayer Piano Bot written by Green Tea in Node JS",
+  "main": "ChasiBot.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MPPGreenTea/ChasiBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MPPGreenTea/ChasiBot/issues"
+  },
+  "homepage": "https://github.com/MPPGreenTea/ChasiBot#readme",
+  "dependencies": {
+    "ws": "^7.2.1"
+  }
+}

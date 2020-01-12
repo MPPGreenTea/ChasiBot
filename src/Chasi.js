@@ -42,11 +42,12 @@
       throw new Error("Client or logger has not been set");
 
     const self = this;
-    this.logger("Initializing Chasi Bot...");
+    this.logger("INFO", "Initializing Chasi Bot...");
 
-    this.command_manager = new CommandManager();
-    this.permissions = new Permissions();
-    this.spam_detector = new SpamDetector();
+    this.permissions = new Permissions(this);
+    this.command_manager = new CommandManager(this);
+    this.chat = new ChatIO(this);
+    this.events = new Events(this);
 
     this.settings = {};
     this.settings.data = settings || {
@@ -80,10 +81,10 @@
 
     this.settings.save = function () {
       Filesystem.writeFileSync(JSON.stringify(self.settings.data), "utf8");
-      self.logger("Settings have been saved");
+      self.logger("INFO", "Settings have been saved");
     };
 
-    this.logger("Connecting to Multiplayer Piano...");
+    this.logger("INFO", "Connecting to Multiplayer Piano...");
     var connection_time = Date.now();
 
     this.client.setChannel(this.settings.get_setting("initialization_channel"));
@@ -95,21 +96,18 @@
   Chasi.prototype.register_socket_events = function (connection_time) {
     const self = this;
     this.client.WS.addEventListener("open", function () {
-      self.logger("Connected to the server in " + (Date.now() - connection_time) + "ms");
+      self.logger("INFO", "Connected to the server in " + (Date.now() - connection_time) + "ms");
 
       self.register_bot_events();
     });
 
     this.client.WS.addEventListener("close", function () {
-      self.logger("Disconnected from the server");
+      self.logger("INFO", "Disconnected from the server");
     });
   }
 
   Chasi.prototype.register_bot_events = function () {
-    this.permissions = new Permissions(this);
-    this.command_manager = new CommandManager(this);
-    this.chat = new ChatIO(this);
-    this.events = new Events(this);
+
   };
 
 

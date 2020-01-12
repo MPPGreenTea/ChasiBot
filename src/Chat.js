@@ -16,11 +16,6 @@
     this.chasi = Chasi;
     this.buffer = [];
 
-    const self = this;
-    this.chasi.client.on("a", function (message) {
-      self.input(message.a, message.p);
-    });
-
     this.initialize_buffer();
   }
 
@@ -57,6 +52,13 @@
 
       self.chasi.client.send({ m: "a", message: message });
     }, parseInt(this.chasi.settings.get_setting("buffer_interval"), 10));
+  };
+
+  ChatIO.prototype.register_bot_events = function () {
+    const self = this;
+    this.chasi.client.on("a", function (message) {
+      self.input(message.a, message.p);
+    });
   };
 
   module.exports = ChatIO;

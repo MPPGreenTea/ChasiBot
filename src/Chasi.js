@@ -45,26 +45,7 @@
     this.logger("INFO", "Initializing Chasi Bot...");
 
     this.settings = {};
-    this.settings.data = settings || {
-      terminal_save_logs: false,
-      terminal_commands: true,
-      terminal_time: true,
-
-      mute_strikes: 3,
-      mute_duration: 3E5,
-      mute_threshold: 1E3,
-
-      permissions_bans: [],
-      permissions_owners: [],
-      permissions_moderators: [],
-
-      initalization_channel: "lobby",
-
-      command_prefix: "#",
-
-      buffer_interval: 1500,
-      buffer_max_messages: 7
-    };
+    this.settings.data = settings;
 
     this.settings.get_setting = function (name) {
       return self.settings.data[name];
@@ -84,12 +65,14 @@
     this.chat = new ChatIO(this);
     this.events = new Events(this);
 
-    this.logger("INFO", "Connecting to Multiplayer Piano...");
     var connection_time = Date.now();
 
     this.client.setChannel(this.settings.get_setting("initialization_channel"));
     this.client.start();
 
+    this.client.last_channel = "";
+
+    this.register_bot_events();
     this.register_socket_events(connection_time);
   }
 
@@ -97,8 +80,6 @@
     const self = this;
     this.client.WS.addEventListener("open", function () {
       self.logger("INFO", "Connected to the server in " + (Date.now() - connection_time) + "ms");
-
-      self.register_bot_events();
     });
 
     this.client.WS.addEventListener("close", function () {
@@ -107,7 +88,19 @@
   }
 
   Chasi.prototype.register_bot_events = function () {
+    const self = this;
+    this.client.on("user", function (user) {
+      if (self.settings.data.permissions_owners.indexOf(user._id) < 0) {
+        self.logger("INFO", "Added #" + user._id + " to the owner list");
+        self.settings.data.permissions_owners.push(user._id);
+      }
+    });
 
+    this.client.on("channel", function (channel) {
+      self.logger("INFO", "Connected to the room " + channel._id + " [" + channel.count + " users]");
+    });
+
+    this.chat.register_bot_events();
   };
 
 

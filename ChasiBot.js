@@ -65,7 +65,7 @@
       permissions_owners: [],
       permissions_moderators: [],
 
-      initalization_channel: "lobby",
+      initialization_channel: "lobby",
 
       command_prefix: "#",
 
@@ -76,12 +76,10 @@
 
   log("INFO", "Settings have been loaded");
 
-  console.log(require(__dirname + "/src/Chasi.js"));
-
   chasi = new Chasi();
   chasi.set_logger(log);
   chasi.set_client(new Client("ws://www.multiplayerpiano.com:8080"));
 
-  chasi.init();
+  chasi.init(settings);
 
 })(true, require(__dirname + "/src/Chasi.js"), require(__dirname + "/src/Client.js"), require("fs"), require("readline"));

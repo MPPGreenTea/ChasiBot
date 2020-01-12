@@ -44,11 +44,6 @@
     const self = this;
     this.logger("INFO", "Initializing Chasi Bot...");
 
-    this.permissions = new Permissions(this);
-    this.command_manager = new CommandManager(this);
-    this.chat = new ChatIO(this);
-    this.events = new Events(this);
-
     this.settings = {};
     this.settings.data = settings || {
       terminal_save_logs: false,
@@ -83,6 +78,11 @@
       Filesystem.writeFileSync(JSON.stringify(self.settings.data), "utf8");
       self.logger("INFO", "Settings have been saved");
     };
+
+    this.permissions = new Permissions(this);
+    this.command_manager = new CommandManager(this);
+    this.chat = new ChatIO(this);
+    this.events = new Events(this);
 
     this.logger("INFO", "Connecting to Multiplayer Piano...");
     var connection_time = Date.now();

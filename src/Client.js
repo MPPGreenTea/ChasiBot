@@ -8,9 +8,8 @@
  *
  * This is the part of ChasiBot that deals with the Websocket connection to
  * Multiplayer Piano. Different sections of ChasiBot uses data received by the
- * client to perform tasks. 
+ * client to perform tasks.
  */
-
 
 (function (exports, WebSocket, EventEmitter) {
 

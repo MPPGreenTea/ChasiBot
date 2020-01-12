@@ -5,9 +5,13 @@
  * Chasi Bot is a Multiplayer Piano Bot written for NodeJS. This
  * bot provides commands not frequently seen in MPP bots created from
  * 2012-2016. These commands include variables, permissions, and files.
+ *
+ * This is the central interface of ChasiBot where the bot receives data from
+ * the server, processes them, and sends them to the different systems that
+ * helps the bot be able to perform tasks.
  */
 
-(function (exports, Filesystem, Permissions, CommandManager, SpamDetector) {
+(function (exports, Filesystem, Permissions, CommandManager, SpamDetector, ChatIO, Events) {
 
   function Chasi() {
     this.command_manager = null;
@@ -17,6 +21,8 @@
     this.client = null;
     this.logger = null;
     this.variables = null;
+    this.events = null;
+    this.chat = null;
   }
 
   Chasi.prototype.set_client = function (client) {
@@ -25,7 +31,11 @@
 
   Chasi.prototype.set_logger = function (logger) {
     if (typeof logger == "function") this.logger = logger;
-  }
+  };
+
+  Chasi.prototype.log_exception = function (e) {
+    console.log(e);
+  };
 
   Chasi.prototype.init = function (settings) {
     if (typeof this.client != "undefined" || typeof this.logger != "function")
@@ -52,7 +62,12 @@
       permissions_owners: [],
       permissions_moderators: [],
 
-      initalization_channel: "lobby"
+      initalization_channel: "lobby",
+
+      command_prefix: "#",
+
+      buffer_interval: 1500,
+      buffer_max_messages: 7
     };
 
     this.settings.get_setting = function (name) {
@@ -91,10 +106,13 @@
   }
 
   Chasi.prototype.register_bot_events = function () {
-
+    this.permissions = new Permissions(this);
+    this.command_manager = new CommandManager(this);
+    this.chat = new ChatIO(this);
+    this.events = new Events(this);
   };
 
 
   exports = Chasi;
 
-})(module.exports, require("fs"));
+})(module.exports, require("fs"), require(__dirname + "/Permissions.js"), require(__dirname + "/CommandManager.js"), null, require(__dirname + "/Chat.js"), require(__dirname + "/Events.js"));

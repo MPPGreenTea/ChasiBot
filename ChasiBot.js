@@ -5,6 +5,10 @@
  * Chasi Bot is a Multiplayer Piano Bot written for NodeJS. This
  * bot provides commands not frequently seen in MPP bots created from
  * 2012-2016. These commands include variables, permissions, and files.
+ *
+ * This file contains code that is required for the code in Chasi.js to
+ * be able to function properly. The settings are loaded in this file and the
+ * modules the bot requires are also loaded here.
  */
 
 (function (Chasi, Client, Filesystem, Readline) {
@@ -35,7 +39,12 @@
       permissions_owners: [],
       permissions_moderators: [],
 
-      initalization_channel: "lobby"
+      initalization_channel: "lobby",
+
+      command_prefix: "#",
+
+      buffer_interval: 1500,
+      buffer_max_messages: 7
     }), "utf8");
   }
 

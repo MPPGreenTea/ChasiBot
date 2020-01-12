@@ -14,11 +14,15 @@
 
 (function (exports) {
 
-  function Permissions() {
+  function Permissions(Chasi) {
+    this.chasi = Chasi;
+    
     this.data = {};
     this.data.owners = [];
     this.data.moderators = [];
     this.data.bans = [];
+
+    this.load_data();
   }
 
   Permissions.prototype.set_level = function (id, level) {
@@ -63,16 +67,16 @@
     return 0;
   };
 
-  Permissions.prototype.load_data = function (settings) {
-    this.data.bans = settings.permissions_bans;
-    this.data.moderators = settings.permissions_moderators;
-    this.data.owners = settings.permissions_owners;
+  Permissions.prototype.load_data = function () {
+    this.data.bans = this.chasi.settings.permissions_bans;
+    this.data.moderators = this.chasi.settings.permissions_moderators;
+    this.data.owners = this.chasi.settings.permissions_owners;
   };
 
-  Permissions.prototype.save_data = function (settings) {
-    settings.permissions_bans = this.data.bans;
-    settings.permissions_moderators = this.data.moderators;
-    settings.permission_owners = this.data.owners;
+  Permissions.prototype.save_data = function () {
+    this.chasi.settings.permissions_bans = this.data.bans;
+    this.chasi.settings.permissions_moderators = this.data.moderators;
+    this.chasi.settings.permission_owners = this.data.owners;
   };
 
   exports = Permissions;

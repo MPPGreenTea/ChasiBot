@@ -101,6 +101,7 @@
     });
 
     this.chat.register_bot_events();
+    this.command_manager.register_bot_events();
   };
 
 

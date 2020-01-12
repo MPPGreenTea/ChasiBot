@@ -63,6 +63,28 @@
     }
   };
 
+  CommandManager.prototype.register_bot_events = function () {
+    const self = this;
+    this.chasi.events.registerListener("chat", function (data) {
+      self.process_chat(data.message, data.user);
+    });
+
+    this.register_command(function (parameters, user) {
+      var level = self.chasi.permissions.get_level(user._id);
+
+      var commands = Object.keys(self.commands).filter(function (command) {
+        return self.commands[command].level == level;
+      }).sort(function (a, b) {
+        return self.commands[b] - self.commands[a];
+      }).sort(function (a, b) {
+        return b.length - a.length;
+      }).map(function (command) {
+        return command + " [" + self.commands[command].level + "]";
+      });
+      self.chasi.chat.send("List of commands you can access [L=" + level + "]: " + commands.join(", "));
+    }, "help", "Shows a list of commands", 0, null, 1, null);
+  };
+
   module.exports = CommandManager;
 
 })();

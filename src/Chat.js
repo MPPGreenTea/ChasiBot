@@ -19,7 +19,7 @@
     this.initialize_buffer();
   }
 
-  ChatIO.prototype.output = function (message) {
+  ChatIO.prototype.send = function (message) {
     this.buffer.push(message);
   };
 

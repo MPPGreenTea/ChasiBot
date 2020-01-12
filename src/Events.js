@@ -24,7 +24,7 @@
     console.log("EVENTS: " + this.events[event.name]);
 
     for (var i = 0; i < this.events[event.name].length; i++)
-      this.events[event.name][i](event);
+      this.events[event.name][i](event.data);
   };
 
   Events.prototype.registerListener = function (event, listener) {

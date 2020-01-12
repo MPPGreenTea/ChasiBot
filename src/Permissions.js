@@ -68,15 +68,15 @@
   };
 
   Permissions.prototype.load_data = function () {
-    this.data.bans = this.chasi.settings.permissions_bans;
-    this.data.moderators = this.chasi.settings.permissions_moderators;
-    this.data.owners = this.chasi.settings.permissions_owners;
+    this.data.bans = this.chasi.settings.data.permissions_bans;
+    this.data.moderators = this.chasi.settings.data.permissions_moderators;
+    this.data.owners = this.chasi.settings.data.permissions_owners;
   };
 
   Permissions.prototype.save_data = function () {
-    this.chasi.settings.permissions_bans = this.data.bans;
-    this.chasi.settings.permissions_moderators = this.data.moderators;
-    this.chasi.settings.permission_owners = this.data.owners;
+    this.chasi.settings.data.permissions_bans = this.data.bans;
+    this.chasi.settings.data.permissions_moderators = this.data.moderators;
+    this.chasi.settings.data.permission_owners = this.data.owners;
   };
 
   module.exports = Permissions;

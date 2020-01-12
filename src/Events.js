@@ -19,7 +19,7 @@
 
   Events.prototype.callEvent = function (event) {
     event.name = event.name.toLowerCase;
-    if (!Array.isArray(this.events[event.name])) returnl
+    if (!Array.isArray(this.events[event.name])) return;
 
     for (var i = 0; i < this.events[event.name].length; i++)
       this.events[event.name][i](event);

@@ -11,7 +11,7 @@
  * helps the bot be able to perform tasks.
  */
 
-(function (Filesystem, Permissions, CommandManager, SpamDetector, ChatIO, Events) {
+(function (Filesystem, Permissions, CommandManager, ChatIO, Events) {
 
   function Chasi() {
     this.command_manager = null;
@@ -136,4 +136,4 @@
 
   module.exports = Chasi;
 
-})(require("fs"), require(__dirname + "/Permissions.js"), require(__dirname + "/CommandManager.js"), null, require(__dirname + "/Chat.js"), require(__dirname + "/Events.js"));
+})(require("fs"), require(__dirname + "/Permissions.js"), require(__dirname + "/CommandManager.js"), require(__dirname + "/Chat.js"), require(__dirname + "/Events.js"));

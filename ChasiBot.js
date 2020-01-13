@@ -11,7 +11,7 @@
  * modules the bot requires are also loaded here.
  */
 
-(function (Test, Chasi, Client, Filesystem, Readline) {
+(function (Chasi, Client, Filesystem, Readline) {
 
   var chat_log = "";
   var settings, chasi;
@@ -33,33 +33,7 @@
   if (!Filesystem.existsSync(__dirname + "/settings.txt")) {
     log("INFO", "Settings file will be created");
 
-    if (!Test) {
-      Filesystem.writeFileSync(__dirname + "/settings.txt", JSON.stringify({
-        terminal_save_logs: false,
-        terminal_commands: true,
-        terminal_time: true,
-
-        mute_strikes: 3,
-        mute_duration: 3E5,
-        mute_threshold: 1E3,
-
-        permissions_bans: [],
-        permissions_owners: [],
-        permissions_moderators: [],
-
-        initalization_channel: "lobby",
-
-        command_prefix: "#",
-
-        buffer_interval: 1500,
-        buffer_max_messages: 7
-      }), "utf8");
-    }
-  }
-
-  if (!Test) settings = JSON.parse(Filesystem.readFileSync(__dirname + "/settings.txt", "utf8"));
-  else {
-    settings = {
+    Filesystem.writeFileSync(__dirname + "/settings.txt", JSON.stringify({
       terminal_save_logs: false,
       terminal_commands: true,
       terminal_time: true,
@@ -74,10 +48,15 @@
 
       buffer_interval: 1500,
       buffer_max_messages: 7
-    };
+    }), "utf8");
   }
 
+  settings = JSON.parse(Filesystem.readFileSync(__dirname + "/settings.txt", "utf8"));
+
   log("INFO", "Settings have been loaded");
+
+  if (!Filesystem.existsSync(__dirname + "/data"))
+    Filesystem.mkdirSync("data");
 
   chasi = new Chasi();
   chasi.set_logger(log);
@@ -85,4 +64,4 @@
 
   chasi.init(settings);
 
-})(true, require(__dirname + "/src/Chasi.js"), require(__dirname + "/src/Client.js"), require("fs"), require("readline"));
+})(require(__dirname + "/src/Chasi.js"), require(__dirname + "/src/Client.js"), require("fs"), require("readline"));

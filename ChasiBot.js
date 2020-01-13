@@ -24,7 +24,7 @@
    * @param {string} input - The message that will be logged
    */
   function log(type, input) {
-    var output = ((settings ? settings.terminal_time : true) ? "[" + new Date().toString().split(" ")[4] + "] " : "") + "[" + type + "]: " + input;
+    var output = ((settings ? settings.terminal_time : true) ? "[" + new Date().toString().split(" ")[4] + "] " : "") + "[" + type + "] " + input;
 
     chat_log += output + "\n";
     console.log(output);
@@ -63,10 +63,6 @@
       terminal_save_logs: false,
       terminal_commands: true,
       terminal_time: true,
-
-      mute_strikes: 3,
-      mute_duration: 3E5,
-      mute_threshold: 1E3,
 
       permissions_bans: [],
       permissions_owners: [],

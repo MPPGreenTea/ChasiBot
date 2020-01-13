@@ -18,7 +18,7 @@
       var commands = Object.keys(self.commands).filter(function (command) {
         return self.commands[command].level <= level;
       }).sort(function (a, b) {
-        return self.commands[b] - self.commands[a];
+        return self.commands[a] - self.commands[b];
       }).map(function (command) {
         return command + " [" + self.commands[command].level + "]";
       });
@@ -49,7 +49,7 @@
           }).join(", ")
         );
       } else if (parameters.length < 2) {
-        commandmanager.chasi.chat.send("This command requires 2 args");
+        commandmanager.chasi.chat.send("This command requires 2 parameters");
         return;
       }
 
@@ -77,8 +77,46 @@
     }, "setting", "Manages settings", 2, 1, null, null);
 
     self.register_command(function (parameters, user) {
+      var data_path = __dirname.split(/[\\\/]/).slice(0, -1).join("\\") + "\\data\\";
+      var fs = require("fs");
 
-    }, "file", "Managesfiles", 2, 2, null, null);
+      if (parameters[0].toLowerCase() == "list") {
+        commandmanager.chasi.chat.send("Files: " + fs.readdirSync(data_path).join(", "));
+        return;
+      }
+
+      if (parameters.length < 2) {
+        commandmanager.chasi.chat.send("This command requires 2 parameters");
+        return;
+      }
+
+      var file = parameters[1].toLowerCase();
+
+      if (parameters[0].toLowerCase() == "read") {
+        if (!fs.existsSync(data_path + file)) {
+          commandmanager.chasi.chat.send("File doesn't exist");
+          return;
+        }
+
+        commandmanager.chasi.chat.send("Contents of " + file + ": " + fs.readFileSync(data_path + file, "utf8"));
+      }
+
+      if (parameters[0].toLowerCase() == "write") {
+        fs.writeFileSync(data_path + file, parameters.slice(2).join(" "), "utf8");
+        commandmanager.chasi.chat.send("Wrote to " + file);
+        return;
+      }
+
+      if (parameters[0].toLowerCase() == "delete") {
+        if (!fs.existsSync(data_path + file)) {
+          commandmanager.chasi.chat.send("File doesn't exist");
+          return;
+        }
+
+        fs.rmdir(data_path + file);
+        commandmanager.chasi.chat.send("Removed " + file);
+      }
+    }, "file", "Manages files", 2, 1, null, null);
 
     self.register_command(function (parameters, user) {
 

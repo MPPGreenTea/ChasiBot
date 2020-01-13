@@ -12,6 +12,11 @@
 
 (function () {
 
+  /**
+   * ChatIO is a class that handles chat input and output messages.
+   *
+   * @param {Chasi} Chasi - The Chasi instance that will be used by the class
+   */
   function ChatIO(Chasi) {
     this.chasi = Chasi;
     this.buffer = [];
@@ -19,10 +24,21 @@
     this.initialize_buffer();
   }
 
+  /**
+   * Adds a chat message to the chat buffer to be sent.
+   *
+   * @param {string} message - The message that will be added to the buffer
+   */
   ChatIO.prototype.send = function (message) {
     this.buffer.push(message);
   };
 
+  /**
+   * Handles the chat messages received by the client.
+   *
+   * @param {string} message - Message that was received from the server
+   * @param {object} user - User that sent the chat message
+   */
   ChatIO.prototype.input = function (message, user) {
     this.chasi.logger("CHAT", user.name + " #" + user._id + ": " + message);
     this.chasi.events.callEvent(this.chasi.events.create_event("chat", {
@@ -31,6 +47,9 @@
     }));
   };
 
+  /**
+   * Initializes the chat buffer
+   */
   ChatIO.prototype.initialize_buffer = function () {
     const self = this;
 
@@ -54,6 +73,9 @@
     }, parseInt(this.chasi.settings.get_setting("buffer_interval"), 10));
   };
 
+  /**
+   * Registers the events for the bot
+   */
   ChatIO.prototype.register_bot_events = function () {
     const self = this;
     this.chasi.client.on("a", function (message) {

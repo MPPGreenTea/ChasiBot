@@ -12,11 +12,27 @@
 
 (function () {
 
+  /**
+   * Handles the registration of commands and when players call the commands.
+   *
+   * @param {Chasi} Chasi - The Chasi instance the class will use
+   */
   function CommandManager(Chasi) {
     this.commands = {};
     this.chasi = Chasi;
   }
 
+  /**
+   * Registers a command to the command manager
+   *
+   * @param {function} callback - The callback of the command when it is called
+   * @param {string} name - The name of the command that will be registered
+   * @param {string} description - The name of the command that will be registered
+   * @param {number} level - The level of the command that will be registered
+   * @param {number} min_args - The minimum amount of args
+   * @param {number} max_args - The maximum amount of args
+   * @param {number} exact_args - The exact amount of args
+   */
   CommandManager.prototype.register_command = function (callback, name, description, level, min_args, max_args, exact_args) {
     if (typeof callback != "function") return;
 
@@ -30,13 +46,26 @@
     };
   };
 
+  /**
+   * Checks if a command exists in the list of registered commands
+   *
+   * @param {string} command_name - Name of the command that will be checked
+   * @return {boolean} Whether or not the command exists
+   */
   CommandManager.prototype.command_exists = function (command_name) {
     return Object.keys(this.commands).indexOf(command_name) >= 0;
   };
 
+  /**
+   * Processes the chat message received from the server and runs a command
+   *
+   * @param {string} input - The chat message received by the server
+   * @param {object} user - The user that sent the chat message
+   * @return {string} The result of calling the command
+   */
   CommandManager.prototype.process_chat = function (input, user) {
     if (input.slice(0, this.chasi.settings.get_setting("command_prefix").length) != this.chasi.settings.get_setting("command_prefix"))
-      return false;
+      return "N";
 
     var command = input.slice(this.chasi.settings.get_setting("command_prefix").length).split(" ")[0];
     var parameters = input.split(" ").slice(1);
@@ -59,10 +88,13 @@
       this.chasi.log_exception(e);
       return "An exception has occured while performing the command";
     } finally {
-      return true;
+      return "N";
     }
   };
 
+  /**
+   * Registers the events that makes the manager function properly
+   */
   CommandManager.prototype.register_bot_events = function () {
     const self = this;
     this.chasi.events.registerListener("chat", function (data) {

@@ -12,11 +12,21 @@
 
 (function () {
 
+  /**
+   * Handles all registration and calls of events
+   *
+   * @param {Chasi} Chasi - The Chasi instance that the Events class will use
+   */
   function Events(Chasi) {
     this.chasi = Chasi;
     this.events = {};
   }
 
+  /**
+   * Triggers all the callbacks that are attached to a certain event
+   *
+   * @param {object} event -  The event data that was emitted
+   */
   Events.prototype.callEvent = function (event) {
     event.name = event.name.toLowerCase();
     if (!Array.isArray(this.events[event.name])) return;
@@ -25,6 +35,12 @@
       this.events[event.name][i](event.data);
   };
 
+  /**
+   * Registers an event listener for the events
+   *
+   * @param {string} event - The name of the event the listener will be attached to
+   * @param {function} listener - The callback function for when the event is triggered
+   */
   Events.prototype.registerListener = function (event, listener) {
     event = event.toLowerCase();
 
@@ -34,6 +50,13 @@
     this.events[event].push(listener);
   };
 
+  /**
+   * Creates an event from the specified parameters
+   *
+   * @param {string} name - The name of the event that will be created
+   * @param {object} data - The data that will be sent with the event
+   * @return {object} The event object that could be sent using the callEvent function
+   */
   Events.prototype.create_event = function (name, data) {
     return {
       name: name.toLowerCase(),

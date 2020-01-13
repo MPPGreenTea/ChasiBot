@@ -16,6 +16,13 @@
   var chat_log = "";
   var settings, chasi;
 
+  /**
+   * Logs messages to the console and stores the messages in a log that will be
+   * saved when the bot is exited.
+   *
+   * @param {string} type - Category the message is included in like INFO, WARN.
+   * @param {string} input - The message that will be logged
+   */
   function log(type, input) {
     var output = ((settings ? settings.terminal_time : true) ? "[" + new Date().toString().split(" ")[4] + "] " : "") + "[" + type + "]: " + input;
 

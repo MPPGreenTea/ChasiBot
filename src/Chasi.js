@@ -25,18 +25,39 @@
     this.chat = null;
   }
 
+  /**
+   * Sets the client for ChasiBot
+   *
+   * @param {Client} client - The client that the bot will use
+   */
   Chasi.prototype.set_client = function (client) {
     if (typeof client != "undefined") this.client = client;
   };
 
+  /**
+   * Sets the logger for ChasiBot
+   *
+   * @param {function} logger - The function that will log messages
+   */
   Chasi.prototype.set_logger = function (logger) {
     if (typeof logger == "function") this.logger = logger;
   };
 
+  /**
+   * Logs an exception
+   *
+   * @param {Error} e - The error that will be logged in the terminal
+   */
   Chasi.prototype.log_exception = function (e) {
     console.log(e);
   };
 
+  /**
+   * Starts the initialization process of ChasiBot.
+   *
+   * @param {object} settings - The settings that the bot will be using
+   * @throws {Error}
+   */
   Chasi.prototype.init = function (settings) {
     if (typeof this.client == "undefined" || typeof this.logger != "function")
       throw new Error("Client or logger has not been set");
@@ -76,6 +97,11 @@
     this.register_socket_events(connection_time);
   }
 
+  /**
+   * Registers the websocket events
+   *
+   * @param {number} connection_time - The time the bot started to connect to Multiplayer Piano
+   */
   Chasi.prototype.register_socket_events = function (connection_time) {
     const self = this;
     this.client.WS.addEventListener("open", function () {
@@ -87,6 +113,9 @@
     });
   }
 
+  /**
+   * Registers the bot's main events
+   */
   Chasi.prototype.register_bot_events = function () {
     const self = this;
     this.client.on("user", function (user) {

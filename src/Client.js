@@ -13,6 +13,12 @@
 
 (function (WebSocket, EventEmitter) {
 
+  /**
+   * Extends two functions as if they are classes
+   *
+   * @param {object} a - The prototype of the first class
+   * @param {object} b - The prototype of the second class
+   */
   function extend(a, b) {
   	for (var i in b) {
   		if (b.hasOwnProperty(i)) {
@@ -21,7 +27,11 @@
   	}
   }
 
-
+  /**
+   * The class that handles the websocket connection to Multiplayer Piano
+   *
+   * @param {string} URI - The URI that the websocket client will connect to
+   */
   function Client(URI) {
   	EventEmitter.call(this);
 
@@ -56,6 +66,9 @@
 
   Client.prototype.constructor = Client;
 
+  /**
+   * Initializes the websocket so that the bot will connect to the server
+   */
   Client.prototype.start = function() {
   	this.WS = new WebSocket(this.URI, {
   		origin: "http://www.multiplayerpiano.com"
@@ -92,6 +105,10 @@
   	});
   };
 
+  /**
+   * Binds the events that the client uses to collect data and emit important
+   * events to the bot.
+   */
   Client.prototype.bindEvents = function () {
   	var self = this;
   	this.on("hi", function (message) {
@@ -150,6 +167,11 @@
   	});
   };
 
+  /**
+   * Sends data to the server.
+   *
+   * @param {object} obj - The object that will be sent to the server
+   */
   Client.prototype.send = function (obj) {
   	if (this.WS && this.WS.readyState == 1) {
   		this.WS.send(JSON.stringify([obj]));
@@ -158,11 +180,21 @@
   	}
   };
 
+  /**
+   * Sets the channel of the bot
+   *
+   * @param {string} id - Name of the channel the bot will be redirected to
+   */
   Client.prototype.setChannel = function (id) {
   	this.channelID = id;
   	this.send({ m: "ch", _id: id || this.channelID, set: {} });
   };
 
+  /**
+   * Sets the participants that are in the channel
+   *
+   * @param {array} players - The list of players in the channel 
+   */
   Client.prototype.setParticipants = function (players) {
   	for (var i = 0; i < players.length; i++) {
   		if (typeof this.players[players[i]._id] == "undefined") {

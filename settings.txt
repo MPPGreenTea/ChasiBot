@@ -1,0 +1,1 @@
+{"terminal_save_logs":false,"terminal_commands":true,"terminal_time":true,"permissions_bans":[],"permissions_owners":[],"permissions_moderators":[],"initialization_channel":"lobby","command_prefix":"#","buffer_interval":1500,"buffer_max_messages":7}
